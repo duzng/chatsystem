@@ -1,37 +1,35 @@
-<!-- File: /app/View/messages/index.ctp -->
+<?php foreach ($messages as $message): ?>
+	<a class="btn btn-delete" msgid="<?php echo $message['Message']['id']; ?>">delete</a>
+	<a class="btn btn-update" text="<?php echo $message['Message']['message']; ?>" msgid="<?php echo $message['Message']['id']; ?>">update</a>
+	<?php echo $message['UserFrom']['username']; ?>
+	<?php echo $message['Message']['created']; ?>:
+	<?php echo $message['Message']['message']; ?><br/>
+	
+<?php endforeach; ?>
 
-<h1>Messages</h1>
-<table>
-    <tr>
-        <th>id</th>
-        <th>message</th>
-        <th>senderid</th>
-		<th>threadid</th>
-		<th>created</th>
-    </tr>
+<script type="text/javascript">
 
-    <!-- Here is where we loop through our $messages array, printing out message info -->
-
-    <?php foreach ($messages as $message): ?>
-    <tr>
-		<td><?php echo $this->Html->link('Edit', array('action' => 'edit', $message['Message']['id'])); ?></td>
-		<td> <?php echo $this->Html->link($message['Message']['message'],
-				array('controller' => 'messages', 'action' => 'view', $message['Message']['id'])); ?>
-					
-					
-<?php
-                echo $this->Form->postLink(
-                    'Delete',
-                    array('action' => 'delete', $message['Message']['id']),
-                    array('confirm' => 'Are you sure?')
-                );
-            ?>
-								
-				</td>
-		<td><?php echo $message["Message"]['senderid']; ?></td>
-		<td><?php echo $message["Message"]['threadid']; ?></td>
-		<td><?php echo $message["Message"]['created']; ?></td>
-    </tr>
-    <?php endforeach; ?>
-    <?php unset($message); ?>
-</table>
+	function btn_delete_click(e) {
+		var msgid = $(this).attr("msgid");
+		jQuery.ajax({
+            type:'POST',
+            url: '<?php echo Router::Url(array('controller' => 'ChatBox', 'action' => 'delete'), TRUE); ?>',
+            success: function(response) {
+                // do something here
+            },
+			data: "data[Message][id]=" + msgid
+        });		
+		
+	}	
+	$(".btn-delete").click(btn_delete_click);
+	
+	function btn_update_click(e) {
+		var text = $(this).attr("text");
+		var msgid = $(this).attr("msgid");
+		$("#txtUpdate").text(text);
+		$("#txtUpdate").attr("msg_id", msgid);
+		$("#update-content").show();
+	}	
+	$(".btn-update").click(btn_update_click);	
+	
+</script>

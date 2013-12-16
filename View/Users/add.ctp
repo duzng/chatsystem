@@ -12,9 +12,3 @@
 	</fieldset>
 <?php echo $this->Form->end('Submit');?>
 </div>
-<div class="actions">
-	<h3>Actions</h3>
-	<ul>
-		<li><?php echo $this->Html->link('List Users', array('action' => 'index'));?></li>
-	</ul>
-</div>

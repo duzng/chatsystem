@@ -7,7 +7,13 @@ class MessagesController extends AppController {
     public $components = array('Session');		
 	
 	public function index() {
-		$this->set("messages", $this->Message->find("all"));
+		$threadid = $this->request->data["threadid"];
+		if (!empty($threadid)) {
+			$this->set("messages", $this->Message->find("all", array('conditions' => "Message.threadid = $threadid")));	
+		} else {
+			$this->set("messages", $this->Message->find("all", array('conditions' => "Message.threadid = 1")));
+		}
+		
 	}
 	
  	public function view($id = null) {
@@ -23,11 +29,14 @@ class MessagesController extends AppController {
     }	
 	
 	public function add() {
+		
+		$this->set("messages", $this->Message->find("all"));
+			
         if ($this->request->is('post')) {
             $this->Message->create();
             if ($this->Message->save($this->request->data)) {
                 $this->Session->setFlash(__('Your message has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('action' => 'add'));
             }
             $this->Session->setFlash(__('Unable to add your message.'));
         }
@@ -66,7 +75,7 @@ class MessagesController extends AppController {
 	        $this->Session->setFlash(
 	            __('The post with id: %s has been deleted.', h($id))
 	        );
-	        return $this->redirect(array('action' => 'index'));
+	        return $this->redirect(array('controller' => 'ChatBox', 'action' => 'show'));
 	    }
 	}	
 }

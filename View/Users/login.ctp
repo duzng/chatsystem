@@ -5,3 +5,5 @@ echo $this->Form->input('username');
 echo $this->Form->input('password');
 echo $this->Form->end('Login');
 ?>
+
+<?php echo $this->Html->link('Register', array('action' => 'add')); ?>

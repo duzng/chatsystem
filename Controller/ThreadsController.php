@@ -14,8 +14,7 @@ class ThreadsController extends AppController {
         if ($this->request->is('post')) {
             $this->Thread->create();
             if ($this->Thread->save($this->request->data)) {
-                $this->Session->setFlash(__('Your message has been saved.'));
-                return $this->redirect(array('action' => 'index'));
+                return $this->redirect(array('controller'=>'ChatBox', 'action'=>'show'));
             }
             $this->Session->setFlash(__('Unable to add your message.'));
         }

@@ -54,8 +54,8 @@ class DATABASE_CONFIG {
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'root',
-		'password' => 'example',
+		'login' => 'duzng',
+		'password' => '020602',
 		'database' => 'chatsystem',
 		'prefix' => '',
 		'encoding' => 'utf8'

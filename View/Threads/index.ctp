@@ -1,21 +1,14 @@
-<!-- File: /app/View/threads/index.ctp -->
+<?php foreach ($threads as $thread): ?>
+	<a class="btn btn-success btn-thread" val="<?php echo $thread['Thread']['id']; ?>"><?php echo $thread["Thread"]['threadname']; ?></a>
+<?php endforeach; ?>
 
-<h1>threads</h1>
-<table>
-    <tr>
-        <th>id</th>
-        <th>threadname</th>
-        <th>created</th>
-    </tr>
-
-    <!-- Here is where we loop through our $threads array, printing out thread info -->
-
-    <?php foreach ($threads as $thread): ?>
-    <tr>
-        <td><?php echo $thread["Thread"]['id']; ?></td>
-		<td><?php echo $thread["Thread"]['threadname']; ?></td>
-		<td><?php echo $thread["Thread"]['created']; ?></td>
-    </tr>
-    <?php endforeach; ?>
-    <?php unset($thread); ?>
-</table>
+<script type="text/javascript">
+	function thread_click(e) {
+		var threadid = $(this).attr("val");
+		$("#threadid").val(threadid);
+		$(".btn-thread").attr("class", "btn btn-success btn-thread");
+		$(this).attr("class", "btn btn-large btn-success btn-thread");
+	}
+	
+	$(".btn-thread").click(thread_click);
+</script>
