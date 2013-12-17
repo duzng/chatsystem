@@ -16,7 +16,7 @@ class Message extends AppModel {
 		'message' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
-				'message' => 'Message cant not be empty',
+				'message' => 'Message can not be empty',
 			),
 		),
 	);

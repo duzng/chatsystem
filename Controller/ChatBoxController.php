@@ -1,6 +1,6 @@
 <?php
 class ChatBoxController extends AppController {
-	var $uses = "Message";
+	var $uses = array("Message", "Thread");
 	
 	public function show() {
 		$username = $this->Auth->user("username");
@@ -10,21 +10,37 @@ class ChatBoxController extends AppController {
 	public function add() {
 		$this->Message->create();
 		$userid = $this->Auth->user("id");
-		$this->request->data["senderid"] = $userid;
-		if (empty($this->request->data["threadid"])) {
-			$this->request->data["threadid"] = 1;
+		$this->request->data["Message"]["senderid"] = $userid;
+		if (empty($this->request->data["Message"]["threadid"])) {
+			$this->request->data["Message"]["threadid"] = 1; // the default thread
 		} 
 		$this->Message->save($this->request->data);
 	}	
 	
 	public function delete() {
-		$id = $this->request->data['Message']['id'];
-		$this->Message->delete($id);
+		$this->Message->id = $this->request->data['Message']['id'];
+		$this->request->data['Message']['created'] = date("Y-m-d H:i:s", time());
+		$this->request->data['Message']['message'] = "deleted";
+		$this->Message->save($this->request->data);
 	}		
 	
 	public function edit() {
-		$this->request->data["created"] = time();
+		$this->request->data['Message']['created'] = date("Y-m-d H:i:s", time());
 		$this->Message->save($this->request->data);
+	}
+	
+	public function threads() {
+		$this->set("threads", $this->Thread->find("all"));
+	}
+	
+	public function messages() {
+		$threadid = $this->request->data["threadid"];
+		if (!empty($threadid)) {
+			$this->set("messages", $this->Message->find("all", array('conditions' => "Message.threadid = $threadid")));	
+		} else {
+			// The thread with id=1 is the default thread. 
+			$this->set("messages", $this->Message->find("all", array('conditions' => "Message.threadid = 1")));
+		}		
 	}
 }
 ?>

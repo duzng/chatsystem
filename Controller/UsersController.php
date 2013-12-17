@@ -1,6 +1,5 @@
 <?php
 class UsersController extends AppController {
-	// var $uses = "ChatBox";
 	public $name = 'Users';
 	
 	public function beforeFilter() {
